@@ -15,8 +15,16 @@ namespace CatalogoWeb
         
         protected void Page_Load(object sender, EventArgs e)
         {
-            CatologoArticulo productos = new CatologoArticulo();
-            listaCatalogo = productos.Listar(); 
+            try
+            {
+                CatologoArticulo productos = new CatologoArticulo();
+                listaCatalogo = productos.Listar();
+            }
+            catch(Exception ex)
+            {
+                ex.ToString();
+            }
+            
            
         }
 
@@ -26,15 +34,22 @@ namespace CatalogoWeb
             CatologoArticulo BuscarArticulo = new CatologoArticulo();
             Busqueda= BuscarArticulo.Listar();
 
-            if(txtFiltro.Text ==" ")
+            try
             {
-                listaCatalogo=Busqueda;
+                if (txtFiltro.Text == " ")
+                {
+                    listaCatalogo = Busqueda;
+                }
+                else
+                {
+                    listaCatalogo = Busqueda.FindAll(Y => Y.Nombre.ToLower().Contains(txtFiltro.Text.ToLower()) || Y.Marca.DescripcionMarca.ToLower().Contains(txtFiltro.Text.ToLower()) || Y.categoria.DescripcionCategoria.ToLower().Contains(txtFiltro.Text.ToLower()));
+                }
             }
-            else
+            
+            catch (Exception ex)
             {
-                listaCatalogo = Busqueda.FindAll(Y => Y.Nombre.ToLower().Contains(txtFiltro.Text.ToLower()) || Y.Marca.DescripcionMarca .ToLower().Contains(txtFiltro.Text.ToLower()) || Y.categoria.DescripcionCategoria.ToLower().Contains(txtFiltro.Text.ToLower()));
+                ex.ToString();
             }
-            //listaCatalogo = BuscarArticulo.Listar();
         }
     }
 }

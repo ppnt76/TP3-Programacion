@@ -4,8 +4,8 @@
     <div style="padding-top: 4rem">
         <asp:GridView ID="gvdTabla" runat="server"  AutoGenerateColumns="True" class="table table-sm;" RowStyle-ForeColor="White" RowStyle-CssClass="bg-dark" HeaderStyle-CssClass="bg-dark" HeaderStyle-ForeColor="White"></asp:GridView>
      
-        <div>
-           <p>Monto Total:<%=Total %></p>
+        <div style="text-align:center;">
+           <p  style="font-size:100px; font-weight:500;  border-color:black; padding-top:20px; border:double;  ">Valor Total:<%=Total %></p>
         </div>
 
         <div class="row justify-content-between" style="padding-top: 15rem">

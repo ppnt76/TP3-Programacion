@@ -17,64 +17,82 @@ namespace CatalogoWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            List<Articulos> Busqueda;
-            CatologoArticulo BuscarArticulo = new CatologoArticulo();
-            Busqueda = BuscarArticulo.Listar();
+            try
+            {
+                List<Articulos> Busqueda;
+                CatologoArticulo BuscarArticulo = new CatologoArticulo();
+                Busqueda = BuscarArticulo.Listar();
 
-            int idAux = Convert.ToInt32(Request.QueryString["idArticulo"]);
-            lista = Busqueda.Find(i => i.idArticulo == idAux);
-
+                int idAux = Convert.ToInt32(Request.QueryString["idArticulo"]);
+                lista = Busqueda.Find(i => i.idArticulo == idAux);
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
         }
 
        
         public DataTable CrearTabla()
         {
-            
-            DataTable td = new DataTable();
-            td.Columns.Add("PRODUCTO");
-            td.Columns.Add("MARCA");
-            td.Columns.Add("PRECIO");
-            return td;
+                DataTable td = new DataTable();
+                td.Columns.Add("PRODUCTO");
+                td.Columns.Add("MARCA");
+                td.Columns.Add("PRECIO");
+                return td;
         }
 
         public void AgregarDatosTabla(DataTable tabla, string nomArticulo, string marcaArticulo, float precioArticulo)
         {
-            DataRow dr = tabla.NewRow();
-            dr["PRODUCTO"] = nomArticulo;
-            dr["MARCA"] = marcaArticulo;
-            dr["PRECIO"] = precioArticulo;
-
-            float parcial = precioArticulo;
-            if(Session["MontoTotal"] == null)
+            try
             {
-                Session["MontoTotal"] = parcial;
-            }
-            else 
-            {
-                float total = (float)(Session["MontoTotal"]);
-                Session["MontoTotal"] = parcial + total;
-            }
+                DataRow dr = tabla.NewRow();
+                dr["PRODUCTO"] = nomArticulo;
+                dr["MARCA"] = marcaArticulo;
+                dr["PRECIO"] = precioArticulo;
 
-            tabla.Rows.Add(dr);
+                float parcial = precioArticulo;
+                if (Session["MontoTotal"] == null)
+                {
+                    Session["MontoTotal"] = parcial;
+                }
+                else
+                {
+                    float total = (float)(Session["MontoTotal"]);
+                    Session["MontoTotal"] = parcial + total;
+                }
+
+                tabla.Rows.Add(dr);
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
         }
 
         public void btnCarrito_Click(object sender, EventArgs e)
         {
-            List<Articulos> Busqueda;
-            CatologoArticulo BuscarArticulo = new CatologoArticulo();
-            Busqueda = BuscarArticulo.Listar();
-
-            int idAux = Convert.ToInt32(Request.QueryString["idArticulo"]);
-            lista = Busqueda.Find(i => i.idArticulo == idAux);
-
-            if (Session["Tabla"] == null)
+            try
             {
-                Session["Tabla"] = CrearTabla();
-            }
+                List<Articulos> Busqueda;
+                CatologoArticulo BuscarArticulo = new CatologoArticulo();
+                Busqueda = BuscarArticulo.Listar();
 
-            AgregarDatosTabla((DataTable)Session["Tabla"], lista.Nombre.ToString(), lista.Marca.ToString(), (float)lista.Precio);
-            Response.Redirect("Carrito.aspx");
-            
+                int idAux = Convert.ToInt32(Request.QueryString["idArticulo"]);
+                lista = Busqueda.Find(i => i.idArticulo == idAux);
+
+                if (Session["Tabla"] == null)
+                {
+                    Session["Tabla"] = CrearTabla();
+                }
+
+                AgregarDatosTabla((DataTable)Session["Tabla"], lista.Nombre.ToString(), lista.Marca.ToString(), (float)lista.Precio);
+                Response.Redirect("Carrito.aspx");
+            }   
+            catch(Exception ex)
+            {
+                ex.ToString();
+            }
         }
 
     }
